@@ -243,8 +243,7 @@
         }
 
         .cta-shopee img {
-            max-width: 200px;
-            width: 100%;
+            width: 50%;
             height: auto;
             transition: transform 0.2s;
             cursor: pointer;
@@ -329,7 +328,7 @@
     <div class="container">
         <div class="header">
             <h1>📱 Generator Artikel HP + Gambar Button (HTML & Markdown)</h1>
-            <p>Database dari Google Sheets • Button Shopee ukuran 200px (HTML & Markdown) • CTA ke-2 bold</p>
+            <p>Database dari Google Sheets • Button Shopee width: 50% (responsif) • CTA ke-2 bold</p>
         </div>
 
         <div class="grid">
@@ -435,7 +434,7 @@
         </div>
 
         <div class="footer" style="text-align: center; margin-top: 30px; color: rgba(255,255,255,0.8);">
-            <p>⚡ Database dari Google Sheets • Button gambar ukuran 200px • CTA ke-2 bold</p>
+            <p>⚡ Database dari Google Sheets • Button gambar width: 50% (responsif) • CTA ke-2 bold</p>
         </div>
     </div>
 
@@ -635,20 +634,20 @@
             </div>
             `;
             
-            // Button Shopee dengan gambar (ukuran 200px untuk HTML)
+            // Button Shopee dengan gambar (width: 50% untuk HTML)
             const buttonHTML = `
             <div class="cta-shopee">
                 <a href="${affiliateLink}" target="_blank">
-                    <img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" style="max-width: 200px; width: 100%; height: auto; border-radius: 8px;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'display: inline-block; background: #ee4d2d; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;\'>🛍️ Beli di Shopee →</span>'">
+                    <img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" style="width: 50%; height: auto; border-radius: 8px;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'display: inline-block; background: #ee4d2d; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;\'>🛍️ Beli di Shopee →</span>'">
                 </a>
             </div>
             `;
             
-            // Button untuk Markdown - ukuran 200px (lebih kecil)
+            // Button untuk Markdown - width: 50% (pakai style agar responsif)
             const buttonMarkdown = `
 <div align="center">
   <a href="${affiliateLink}" target="_blank">
-    <img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" width="200" style="max-width:200px; width:50%; height:auto; border-radius:8px;">
+    <img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" style="width: 50%; height: auto; border-radius: 8px;">
   </a>
 </div>
             `;
@@ -686,21 +685,21 @@ ${imageHTML}
 
 <h2>📊 Spesifikasi Lengkap ${hpName}</h2>
 <table>
-     <tr><th>Komponen</th><th>Spesifikasi</th></tr>
-     <tr><td>Layar</td><td>${screen}</td></tr>
-     <tr><td>Chipset</td><td>${chipset}</td></tr>
-     <tr><td>RAM & Storage</td><td>${ramStorage}</td></tr>
-     <tr><td>Kamera Belakang</td><td>${rearCam}</td></tr>
-     <tr><td>Kamera Depan</td><td>${frontCam}</td></tr>
-     <tr><td>Baterai</td><td>${battery}</td></tr>
-     <tr><td>Sistem Operasi</td><td>${os}</td></tr>
-     <tr><td>Warna</td><td>${colorsList.join(', ') || '-'}</td></tr>
+     <th>Komponen</th><th>Spesifikasi</th>
+     <td>Layar</td><td>${screen}</td>
+     <td>Chipset</td><td>${chipset}</td>
+     <td>RAM & Storage</td><td>${ramStorage}</td>
+     <td>Kamera Belakang</td><td>${rearCam}</td>
+     <td>Kamera Depan</td><td>${frontCam}</td>
+     <td>Baterai</td><td>${battery}</td>
+     <td>Sistem Operasi</td><td>${os}</td>
+     <td>Warna</td><td>${colorsList.join(', ') || '-'}</td>
 </table>
 
 <h2>💰 Harga Terbaru ${hpName}</h2>
 <table>
-     <tr><th>Varian</th><th>Harga</th></tr>
-     <tr><td>${ramStorage}</td><td>${formattedPrice}</td></tr>
+     <th>Varian</th><th>Harga</th>
+     <td>${ramStorage}</td><td>${formattedPrice}</td>
 </table>
 
 <hr>
@@ -728,7 +727,6 @@ ${buttonHTML}
             `;
             
             // ==================== MARKDOWN VERSION ====================
-            // Menggunakan HTML di Markdown agar gambar button tampil dengan ukuran 200px
             currentArticleMarkdown = `# ${hpName}: Spesifikasi Lengkap, Harga Terbaru, dan Tempat Beli Termurah
 
 <div align="center">
@@ -811,7 +809,6 @@ ${buttonMarkdown}
             if (currentTab === 'html') {
                 previewDiv.innerHTML = currentArticleHTML;
             } else {
-                // Untuk preview Markdown, tampilkan sebagai pre dengan background gelap
                 previewDiv.innerHTML = `<pre style="white-space: pre-wrap; font-family: monospace; background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; font-size: 12px;">${escapeHtml(currentArticleMarkdown)}</pre>`;
             }
         }
