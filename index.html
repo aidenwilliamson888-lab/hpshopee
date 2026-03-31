@@ -329,7 +329,7 @@
     <div class="container">
         <div class="header">
             <h1>📱 Generator Artikel HP + Gambar Button (HTML & Markdown)</h1>
-            <p>Database dari Google Sheets • Button Shopee pakai gambar (HTML & Markdown) • Output siap pakai</p>
+            <p>Database dari Google Sheets • Button Shopee ukuran sama (250px) • CTA ke-2 bold</p>
         </div>
 
         <div class="grid">
@@ -435,7 +435,7 @@
         </div>
 
         <div class="footer" style="text-align: center; margin-top: 30px; color: rgba(255,255,255,0.8);">
-            <p>⚡ Database dari Google Sheets • Button gambar berlaku di HTML & Markdown • CTA ke-2 ditebalkan</p>
+            <p>⚡ Database dari Google Sheets • Button gambar ukuran 250px • CTA ke-2 bold</p>
         </div>
     </div>
 
@@ -635,7 +635,7 @@
             </div>
             `;
             
-            // Button Shopee dengan gambar (HTML & Markdown - menggunakan HTML di Markdown)
+            // Button Shopee dengan gambar (ukuran 250px, sama untuk HTML & Markdown)
             const buttonHTML = `
             <div class="cta-shopee">
                 <a href="${affiliateLink}" target="_blank">
@@ -644,18 +644,18 @@
             </div>
             `;
             
-            // Button untuk Markdown (menggunakan HTML agar gambar tetap tampil)
+            // Button untuk Markdown - ukuran sama 250px
             const buttonMarkdown = `
 <div align="center">
   <a href="${affiliateLink}" target="_blank">
-    <img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" width="250" style="max-width:250px; width:100%; height:auto;">
+    <img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" width="250" style="max-width:250px; width:100%; height:auto; border-radius:8px;">
   </a>
 </div>
             `;
             
-            // CTA ke-2 yang ditebalkan
+            // CTA ke-2 yang ditebalkan (BOLD)
             const boldCTA = `<strong><a href="${affiliateLink}" target="_blank">Klik di sini untuk membeli ${hpName} sekarang juga!</a></strong>`;
-            const boldCTAMarkdown = `** [Klik di sini untuk membeli ${hpName} sekarang juga!](${affiliateLink}) **`;
+            const boldCTAMarkdown = `**[Klik di sini untuk membeli ${hpName} sekarang juga!](${affiliateLink})**`;
             
             // ==================== HTML VERSION ====================
             currentArticleHTML = `
@@ -728,7 +728,7 @@ ${buttonHTML}
             `;
             
             // ==================== MARKDOWN VERSION ====================
-            // Menggunakan HTML di Markdown agar gambar button tetap tampil
+            // Menggunakan HTML di Markdown agar gambar button tampil dengan ukuran sama
             currentArticleMarkdown = `# ${hpName}: Spesifikasi Lengkap, Harga Terbaru, dan Tempat Beli Termurah
 
 <div align="center">
@@ -797,7 +797,7 @@ ${buttonMarkdown}
 
 **Kesimpulan:** Dengan harga **${formattedPrice}**, ${hpName} menawarkan nilai plus yang kompetitif di kelasnya. Cocok bagi Anda yang mencari HP dengan spesifikasi mumpuni di budget terbatas.
 
-👉 **${boldCTAMarkdown}**
+👉 ${boldCTAMarkdown}
 
 ---
 *Harga dapat berubah sewaktu-waktu. Link afiliasi membantu mendukung konten ini.*
