@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Artikel HP - Google Sheets Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .form-panel h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-copy {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .btn-copy:hover {
+            background: #218838;
+        }
+
+        .btn-copy-markdown {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .btn-copy-markdown:hover {
+            background: #138496;
+        }
+
+        .preview-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-panel h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .article-preview {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .article-preview h1 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .article-preview h2 {
+            font-size: 1.3rem;
+            margin: 20px 0 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .article-preview table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .article-preview th, .article-preview td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .article-preview th {
+            background: #f0f0f0;
+        }
+
+        .article-preview .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ee4d2d 0%, #ff6b3d 100%);
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .status-info {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .status-info.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-info.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-info.loading {
+            background: #e2f3ff;
+            color: #004085;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .suggestion-list {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            width: calc(100% - 30px);
+            z-index: 100;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .suggestion-item:hover {
+            background: #f0f0f0;
+        }
+
+        .relative {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Generator Artikel HP + Google Sheets</h1>
+            <p>Database dari Google Sheets • Cukup input nama HP + link afiliasi • Output HTML & Markdown</p>
+        </div>
+
+        <div class="grid">
+            <div class="form-panel">
+                <h2>📝 Input Data HP</h2>
+                
+                <div class="form-group relative">
+                    <label>🔍 Cari Nama HP (auto-suggest dari database)</label>
+                    <input type="text" id="hpSearch" placeholder="Ketik nama HP... contoh: infinix smart 10" autocomplete="off">
+                    <div id="suggestions" class="suggestion-list" style="display: none;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>🔗 Link Afiliasi Shopee</label>
+                    <input type="text" id="affiliateLink" placeholder="https://shopee.co.id/...">
+                </div>
+
+                <div id="manualFields">
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label>🏷️ Merek</label>
+                            <input type="text" id="brand" placeholder="Otomatis terisi">
+                        </div>
+                        <div class="form-group">
+                            <label>💾 RAM / Storage</label>
+                            <input type="text" id="ramStorage" placeholder="Otomatis terisi">
+                        </div>
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label>💰 Harga (Rp)</label>
+                            <input type="text" id="price" placeholder="Otomatis terisi">
+                        </div>
+                        <div class="form-group">
+                            <label>🖥️ Layar</label>
+                            <input type="text" id="screen" placeholder="Otomatis terisi">
+                        </div>
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label>🔧 Chipset</label>
+                            <input type="text" id="chipset" placeholder="Otomatis terisi">
+                        </div>
+                        <div class="form-group">
+                            <label>📸 Kamera Belakang</label>
+                            <input type="text" id="rearCam" placeholder="Otomatis terisi">
+                        </div>
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label>🤳 Kamera Depan</label>
+                            <input type="text" id="frontCam" placeholder="Otomatis terisi">
+                        </div>
+                        <div class="form-group">
+                            <label>🔋 Baterai</label>
+                            <input type="text" id="battery" placeholder="Otomatis terisi">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>✨ Fitur Unggulan</label>
+                        <textarea id="features" rows="2" placeholder="Otomatis terisi"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🎨 Warna</label>
+                        <textarea id="colors" rows="2" placeholder="Otomatis terisi"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📱 OS / Android</label>
+                        <input type="text" id="os" placeholder="Otomatis terisi">
+                    </div>
+                </div>
+
+                <button class="btn-generate" onclick="generateArticle()">🚀 Generate Artikel</button>
+                <button class="btn-copy" onclick="copyHTML()">📋 Copy HTML</button>
+                <button class="btn-copy-markdown" onclick="copyMarkdown()">📝 Copy Markdown (GitHub)</button>
+                
+                <div class="status-info" id="statusInfo">
+                    📡 Mengambil data dari Google Sheets...
+                </div>
+            </div>
+
+            <div class="preview-panel">
+                <h2>📄 Preview Artikel</h2>
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('html')">HTML Preview</button>
+                    <button class="tab-btn" onclick="switchTab('markdown')">Markdown Preview</button>
+                </div>
+                <div class="article-preview" id="articlePreview">
+                    <p style="color: #999; text-align: center;">Memuat database dari Google Sheets...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer" style="text-align: center; margin-top: 30px; color: rgba(255,255,255,0.8);">
+            <p>⚡ Database dari Google Sheets • Update data cukup edit Google Sheet • Support HTML & Markdown</p>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">✓ Berhasil disalin!</div>
+
+    <script>
+        // ==================== GOOGLE SHEETS CONFIG ====================
+        // GANTI DENGAN SHEET ID KAMU!
+        const SHEET_ID = 'YOUR_SHEET_ID_HERE';
+        
+        // URL untuk fetch data dari Google Sheets (tanpa API key)
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+        
+        // Database global
+        let hpDatabase = {};
+        let hpList = [];
+        let currentTab = 'html';
+        let currentArticleHTML = '';
+        let currentArticleMarkdown = '';
+        
+        // ==================== LOAD DATA FROM GOOGLE SHEETS ====================
+        async function loadFromGoogleSheets() {
+            const statusDiv = document.getElementById('statusInfo');
+            statusDiv.className = 'status-info loading';
+            statusDiv.innerHTML = '🔄 Mengambil data dari Google Sheets...';
+            
+            try {
+                const response = await fetch(SHEET_URL);
+                const text = await response.text();
+                
+                // Parse JSONP response (Google Sheets returns JSONP format)
+                const jsonString = text.substring(text.indexOf('(') + 1, text.lastIndexOf(')'));
+                const data = JSON.parse(jsonString);
+                
+                const rows = data.table.rows;
+                const headers = data.table.cols.map(col => col.label);
+                
+                // Clear database
+                hpDatabase = {};
+                hpList = [];
+                
+                // Skip header row (row 0 is header)
+                for (let i = 0; i < rows.length; i++) {
+                    const row = rows[i];
+                    if (!row.c) continue;
+                    
+                    const hpData = {
+                        nama_hp: row.c[0]?.v || '',
+                        brand: row.c[1]?.v || '',
+                        ram_storage: row.c[2]?.v || '',
+                        price: row.c[3]?.v || '',
+                        screen: row.c[4]?.v || '',
+                        chipset: row.c[5]?.v || '',
+                        rear_cam: row.c[6]?.v || '',
+                        front_cam: row.c[7]?.v || '',
+                        battery: row.c[8]?.v || '',
+                        features: row.c[9]?.v || '',
+                        colors: row.c[10]?.v || '',
+                        os: row.c[11]?.v || ''
+                    };
+                    
+                    const namaKey = hpData.nama_hp.toLowerCase().trim();
+                    if (namaKey) {
+                        hpDatabase[namaKey] = hpData;
+                        hpList.push({
+                            name: hpData.nama_hp,
+                            key: namaKey,
+                            brand: hpData.brand
+                        });
+                    }
+                }
+                
+                // Sort HP list alphabetically
+                hpList.sort((a, b) => a.name.localeCompare(b.name));
+                
+                statusDiv.className = 'status-info success';
+                statusDiv.innerHTML = `✅ Berhasil memuat ${Object.keys(hpDatabase).length} data HP dari Google Sheets!`;
+                
+                return true;
+            } catch (error) {
+                console.error('Error loading from Google Sheets:', error);
+                statusDiv.className = 'status-info error';
+                statusDiv.innerHTML = `❌ Gagal memuat data dari Google Sheets. Pastikan Sheet ID benar dan sudah dipublish. Error: ${error.message}`;
+                return false;
+            }
+        }
+        
+        // ==================== AUTO SUGGEST ====================
+        function setupAutoSuggest() {
+            const searchInput = document.getElementById('hpSearch');
+            const suggestionsDiv = document.getElementById('suggestions');
+            
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase().trim();
+                
+                if (query.length < 2) {
+                    suggestionsDiv.style.display = 'none';
+                    return;
+                }
+                
+                const matches = hpList.filter(hp => 
+                    hp.name.toLowerCase().includes(query) || 
+                    hp.brand.toLowerCase().includes(query)
+                ).slice(0, 10);
+                
+                if (matches.length > 0) {
+                    suggestionsDiv.innerHTML = matches.map(match => 
+                        `<div class="suggestion-item" onclick="selectHP('${match.key}')">
+                            <strong>${match.name}</strong><br>
+                            <small>${match.brand}</small>
+                        </div>`
+                    ).join('');
+                    suggestionsDiv.style.display = 'block';
+                } else {
+                    suggestionsDiv.style.display = 'none';
+                }
+            });
+            
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+                    suggestionsDiv.style.display = 'none';
+                }
+            });
+        }
+        
+        function selectHP(key) {
+            const hp = hpDatabase[key];
+            if (hp) {
+                document.getElementById('hpSearch').value = hp.nama_hp;
+                fillFormWithData(hp);
+                document.getElementById('suggestions').style.display = 'none';
+                generateArticle();
+            }
+        }
+        
+        function fillFormWithData(hp) {
+            document.getElementById('brand').value = hp.brand || '';
+            document.getElementById('ramStorage').value = hp.ram_storage || '';
+            document.getElementById('price').value = formatPriceForInput(hp.price || '');
+            document.getElementById('screen').value = hp.screen || '';
+            document.getElementById('chipset').value = hp.chipset || '';
+            document.getElementById('rearCam').value = hp.rear_cam || '';
+            document.getElementById('frontCam').value = hp.front_cam || '';
+            document.getElementById('battery').value = hp.battery || '';
+            document.getElementById('features').value = hp.features || '';
+            document.getElementById('colors').value = hp.colors || '';
+            document.getElementById('os').value = hp.os || '';
+        }
+        
+        function formatPriceForInput(price) {
+            if (!price) return '';
+            // Remove non-numeric characters
+            const numeric = price.toString().replace(/[^0-9]/g, '');
+            if (numeric === '') return price;
+            return parseInt(numeric).toLocaleString('id-ID');
+        }
+        
+        function formatPrice(priceStr) {
+            if (!priceStr) return '-';
+            const numeric = priceStr.toString().replace(/[^0-9]/g, '');
+            if (numeric === '') return priceStr;
+            return 'Rp ' + parseInt(numeric).toLocaleString('id-ID');
+        }
+        
+        // ==================== GENERATE ARTICLE ====================
+        function generateArticle() {
+            const hpName = document.getElementById('hpSearch').value;
+            const affiliateLink = document.getElementById('affiliateLink').value || '#';
+            const brand = document.getElementById('brand').value || 'Brand';
+            const ramStorage = document.getElementById('ramStorage').value || '-';
+            const priceRaw = document.getElementById('price').value;
+            const screen = document.getElementById('screen').value || '-';
+            const chipset = document.getElementById('chipset').value || '-';
+            const rearCam = document.getElementById('rearCam').value || '-';
+            const frontCam = document.getElementById('frontCam').value || '-';
+            const battery = document.getElementById('battery').value || '-';
+            const featuresRaw = document.getElementById('features').value;
+            const colorsRaw = document.getElementById('colors').value;
+            const os = document.getElementById('os').value || '-';
+            
+            const featuresList = featuresRaw.split(',').map(f => f.trim()).filter(f => f);
+            const colorsList = colorsRaw.split(',').map(c => c.trim()).filter(c => c);
+            
+            const today = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+            const formattedPrice = formatPrice(priceRaw);
+            
+            // ==================== HTML VERSION ====================
+            currentArticleHTML = `
+<h1>${hpName}: Spesifikasi Lengkap, Harga Terbaru, dan Tempat Beli Termurah</h1>
+
+<p><strong>${today}</strong> – Pasar smartphone tanah air kembali diramaikan dengan kehadiran <strong>${hpName}</strong>, ponsel terbaru dari <strong>${brand}</strong> yang menawarkan kombinasi menarik antara performa, fitur, dan harga terjangkau.</p>
+
+<p>Hadir dengan membawa sejumlah peningkatan dibanding pendahulunya, HP ini langsung menjadi perbincangan hangat di kalangan pecinta gadget. Lantas, apa saja keunggulan yang ditawarkan? Simak ulasan lengkapnya berikut ini.</p>
+
+<hr>
+
+<h2>📱 Desain dan Tampilan</h2>
+<p>${brand} membekali ${hpName} dengan desain modern yang stylish. Layar <strong>${screen}</strong> memberikan pengalaman visual yang memukau. Tersedia dalam pilihan warna: <strong>${colorsList.join(', ') || 'berbagai pilihan menarik'}</strong>.</p>
+
+<h2>⚙️ Performa dan Dapur Pacu</h2>
+<p>Untuk urusan performa, ${hpName} mengandalkan chipset <strong>${chipset}</strong> dengan konfigurasi RAM dan storage <strong>${ramStorage}</strong>. Sistem operasi yang digunakan adalah <strong>${os}</strong>. Performanya cukup mumpuni untuk aktivitas sehari-hari seperti chatting, streaming, hingga gaming ringan.</p>
+
+<h2>📸 Kamera: Hasil Jernih untuk Dokumentasi</h2>
+<p>Di sektor fotografi, ${hpName} dibekali kamera belakang <strong>${rearCam}</strong> dan kamera depan <strong>${frontCam}</strong>. Kualitas kameranya cukup mumpuni untuk kelasnya, cocok untuk dokumentasi harian dan konten media sosial.</p>
+
+<h2>🔋 Baterai dan Fitur Pendukung</h2>
+<p>${hpName} dilengkapi baterai <strong>${battery}</strong> yang diklaim mampu bertahan seharian penuh. Fitur unggulan lainnya:</p>
+<ul>
+    ${featuresList.map(f => `<li>✅ ${f}</li>`).join('') || '<li>✅ Berbagai fitur pendukung aktivitas sehari-hari</li>'}
+</ul>
+
+<h2>📊 Spesifikasi Lengkap ${hpName}</h2>
+<table>
+    <tr><th>Komponen</th><th>Spesifikasi</th></tr>
+    <tr><td>Layar</td><td>${screen}</td></tr>
+    <tr><td>Chipset</td><td>${chipset}</td></tr>
+    <tr><td>RAM & Storage</td><td>${ramStorage}</td></tr>
+    <tr><td>Kamera Belakang</td><td>${rearCam}</td></tr>
+    <tr><td>Kamera Depan</td><td>${frontCam}</td></tr>
+    <tr><td>Baterai</td><td>${battery}</td></tr>
+    <tr><td>Sistem Operasi</td><td>${os}</td></tr>
+    <tr><td>Warna</td><td>${colorsList.join(', ') || '-'}</td></tr>
+</table>
+
+<h2>💰 Harga Terbaru ${hpName}</h2>
+<table>
+    <tr><th>Varian</th><th>Harga</th></tr>
+    <tr><td>${ramStorage}</td><td>${formattedPrice}</td></tr>
+</table>
+
+<hr>
+
+<h2>🛒 Beli ${hpName} Sekarang Juga!</h2>
+<p>Jangan sampai kehabisan! Dapatkan <strong>${hpName}</strong> dengan harga terbaik dan garansi resmi hanya di Shopee:</p>
+
+<p style="text-align: center; margin: 20px 0;">
+    <a href="${affiliateLink}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #ee4d2d 0%, #ff6b3d 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px;">🛍️ Beli ${hpName} di Shopee →</a>
+</p>
+
+<div style="background: #f0f0f0; padding: 15px; border-radius: 10px; margin: 20px 0;">
+    <p><strong>🎁 Bonus Spesial untuk Pembaca!</strong></p>
+    <ul>
+        <li>✅ Garansi Resmi 1 Tahun</li>
+        <li>✅ Gratis Ongkir (area tertentu)</li>
+        <li>✅ Cicilan 0% (kartu kredit pilihan)</li>
+    </ul>
+</div>
+
+<p><strong>Kesimpulan:</strong> Dengan harga <strong>${formattedPrice}</strong>, ${hpName} menawarkan nilai plus yang kompetitif di kelasnya. Cocok bagi Anda yang mencari HP dengan spesifikasi mumpuni di budget terbatas.</p>
+
+<p>👉 <strong><a href="${affiliateLink}" target="_blank">Klik di sini untuk membeli ${hpName} sekarang juga!</a></strong></p>
+
+<hr>
+<p style="font-size: 12px; color: #777;">*Harga dapat berubah sewaktu-waktu. Link afiliasi membantu mendukung konten ini.</p>
+            `;
+            
+            // ==================== MARKDOWN VERSION ====================
+            currentArticleMarkdown = `# ${hpName}: Spesifikasi Lengkap, Harga Terbaru, dan Tempat Beli Termurah
+
+**${today}** – Pasar smartphone tanah air kembali diramaikan dengan kehadiran **${hpName}**, ponsel terbaru dari **${brand}** yang menawarkan kombinasi menarik antara performa, fitur, dan harga terjangkau.
+
+Hadir dengan membawa sejumlah peningkatan dibanding pendahulunya, HP ini langsung menjadi perbincangan hangat di kalangan pecinta gadget. Lantas, apa saja keunggulan yang ditawarkan? Simak ulasan lengkapnya berikut ini.
+
+---
+
+## 📱 Desain dan Tampilan
+
+${brand} membekali ${hpName} dengan desain modern yang stylish. Layar **${screen}** memberikan pengalaman visual yang memukau. Tersedia dalam pilihan warna: **${colorsList.join(', ') || 'berbagai pilihan menarik'}**.
+
+## ⚙️ Performa dan Dapur Pacu
+
+Untuk urusan performa, ${hpName} mengandalkan chipset **${chipset}** dengan konfigurasi RAM dan storage **${ramStorage}**. Sistem operasi yang digunakan adalah **${os}**. Performanya cukup mumpuni untuk aktivitas sehari-hari seperti chatting, streaming, hingga gaming ringan.
+
+## 📸 Kamera: Hasil Jernih untuk Dokumentasi
+
+Di sektor fotografi, ${hpName} dibekali kamera belakang **${rearCam}** dan kamera depan **${frontCam}**. Kualitas kameranya cukup mumpuni untuk kelasnya, cocok untuk dokumentasi harian dan konten media sosial.
+
+## 🔋 Baterai dan Fitur Pendukung
+
+${hpName} dilengkapi baterai **${battery}** yang diklaim mampu bertahan seharian penuh. Fitur unggulan lainnya:
+
+${featuresList.map(f => `- ✅ ${f}`).join('\n') || '- ✅ Berbagai fitur pendukung aktivitas sehari-hari'}
+
+## 📊 Spesifikasi Lengkap ${hpName}
+
+| Komponen | Spesifikasi |
+|----------|-------------|
+| Layar | ${screen} |
+| Chipset | ${chipset} |
+| RAM & Storage | ${ramStorage} |
+| Kamera Belakang | ${rearCam} |
+| Kamera Depan | ${frontCam} |
+| Baterai | ${battery} |
+| Sistem Operasi | ${os} |
+| Warna | ${colorsList.join(', ') || '-'} |
+
+## 💰 Harga Terbaru ${hpName}
+
+| Varian | Harga |
+|--------|-------|
+| ${ramStorage} | ${formattedPrice} |
+
+---
+
+## 🛒 Beli ${hpName} Sekarang Juga!
+
+Jangan sampai kehabisan! Dapatkan **${hpName}** dengan harga terbaik dan garansi resmi hanya di Shopee:
+
+[🛍️ Beli ${hpName} di Shopee →](${affiliateLink})
+
+**🎁 Bonus Spesial untuk Pembaca!**
+- ✅ Garansi Resmi 1 Tahun
+- ✅ Gratis Ongkir (area tertentu)
+- ✅ Cicilan 0% (kartu kredit pilihan)
+
+**Kesimpulan:** Dengan harga **${formattedPrice}**, ${hpName} menawarkan nilai plus yang kompetitif di kelasnya. Cocok bagi Anda yang mencari HP dengan spesifikasi mumpuni di budget terbatas.
+
+👉 [Klik di sini untuk membeli ${hpName} sekarang juga!](${affiliateLink})
+
+---
+*Harga dapat berubah sewaktu-waktu. Link afiliasi membantu mendukung konten ini.*
+            `;
+            
+            // Update preview based on current tab
+            updatePreview();
+        }
+        
+        function updatePreview() {
+            const previewDiv = document.getElementById('articlePreview');
+            if (currentTab === 'html') {
+                previewDiv.innerHTML = currentArticleHTML;
+            } else {
+                previewDiv.innerHTML = `<pre style="white-space: pre-wrap; font-family: monospace; background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; font-size: 12px;">${escapeHtml(currentArticleMarkdown)}</pre>`;
+            }
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.tab-btn:nth-child(${tab === 'html' ? 1 : 2})`).classList.add('active');
+            updatePreview();
+        }
+        
+        function copyHTML() {
+            navigator.clipboard.writeText(currentArticleHTML).then(() => showToast('✓ HTML berhasil disalin!'));
+        }
+        
+        function copyMarkdown() {
+            navigator.clipboard.writeText(currentArticleMarkdown).then(() => showToast('✓ Markdown berhasil disalin!'));
+        }
+        
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+        
+        // ==================== INIT ====================
+        async function init() {
+            await loadFromGoogleSheets();
+            setupAutoSuggest();
+            
+            // Set example if available
+            if (hpList.length > 0) {
+                const firstHP = hpList[0];
+                document.getElementById('hpSearch').value = firstHP.name;
+                fillFormWithData(hpDatabase[firstHP.key]);
+                generateArticle();
+            }
+        }
+        
+        init();
+    </script>
+</body>
+</html>
