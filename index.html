@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Artikel HP + Gambar Button (HTML & Markdown)</title>
+    <title>Generator Artikel HP - Auto Database + Gambar Button</title>
     <style>
         * {
             margin: 0;
@@ -19,30 +19,32 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
+        /* Header */
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .header h1 {
             color: white;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2rem;
+            margin-bottom: 8px;
         }
 
         .header p {
             color: rgba(255,255,255,0.9);
-            font-size: 1.1rem;
+            font-size: 0.95rem;
         }
 
+        /* Grid 2 Kolom */
         .grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            grid-template-columns: 380px 1fr;
+            gap: 25px;
         }
 
         @media (max-width: 900px) {
@@ -51,79 +53,90 @@
             }
         }
 
+        /* Form Panel (Kiri) */
         .form-panel {
             background: white;
             border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            height: fit-content;
         }
 
         .form-panel h2 {
             color: #333;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
             border-bottom: 2px solid #667eea;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .form-group label {
             display: block;
+            font-size: 0.8rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             color: #555;
         }
 
         .form-group input, .form-group textarea, .form-group select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
         }
 
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+            box-shadow: 0 0 0 2px rgba(102,126,234,0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 50px;
         }
 
         .row-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 10px;
         }
 
+        /* Button */
         .btn-generate {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 14px 25px;
-            font-size: 1.1rem;
+            padding: 10px 16px;
+            font-size: 0.9rem;
             font-weight: 600;
             border-radius: 10px;
             cursor: pointer;
             width: 100%;
+            margin-top: 10px;
             transition: transform 0.2s;
         }
 
         .btn-generate:hover {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
         .btn-copy {
             background: #28a745;
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 0.9rem;
+            padding: 8px 12px;
+            font-size: 0.8rem;
             font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 10px;
             width: 100%;
         }
 
@@ -135,12 +148,12 @@
             background: #17a2b8;
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 0.9rem;
+            padding: 8px 12px;
+            font-size: 0.8rem;
             font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 8px;
             width: 100%;
         }
 
@@ -148,125 +161,15 @@
             background: #138496;
         }
 
-        .preview-panel {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .preview-panel h2 {
-            color: #333;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-        }
-
-        .tab-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .tab-btn {
-            padding: 8px 16px;
-            background: #f0f0f0;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .tab-btn.active {
-            background: #667eea;
-            color: white;
-        }
-
-        .article-preview {
-            background: #fafafa;
-            border-radius: 12px;
-            padding: 20px;
-            max-height: 600px;
-            overflow-y: auto;
-            font-size: 14px;
-            line-height: 1.6;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .article-preview h1 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .article-preview h2 {
-            font-size: 1.3rem;
-            margin: 20px 0 10px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .article-preview table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-
-        .article-preview th, .article-preview td {
-            border: 1px solid #ddd;
-            padding: 8px 12px;
-            text-align: left;
-        }
-
-        .article-preview th {
-            background: #f0f0f0;
-        }
-
-        .phone-image {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .phone-image img {
-            max-width: 100%;
-            max-height: 300px;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .cta-shopee {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .cta-shopee img {
-            width: 50%;
-            height: auto;
-            transition: transform 0.2s;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-
-        .cta-shopee img:hover {
-            transform: scale(1.02);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #667eea;
-        }
-
+        /* Status Info */
         .status-info {
-            margin-top: 15px;
-            padding: 10px;
-            background: #f0f0f0;
+            margin-top: 12px;
+            padding: 8px;
+            background: #f8f9fa;
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 0.7rem;
             color: #666;
+            text-align: center;
         }
 
         .status-info.success {
@@ -284,17 +187,114 @@
             color: #004085;
         }
 
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #28a745;
+        /* Preview Panel (Kanan) */
+        .preview-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-panel h2 {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .tab-btn {
+            padding: 6px 14px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #667eea;
             color: white;
-            padding: 12px 24px;
+        }
+
+        .article-preview {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 16px;
+            max-height: 550px;
+            overflow-y: auto;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #333;
+            border: 1px solid #eee;
+        }
+
+        /* Style untuk konten artikel di preview */
+        .article-preview h1 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .article-preview h2 {
+            font-size: 1.1rem;
+            margin: 12px 0 6px;
+            padding-bottom: 3px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .article-preview table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 11px;
+        }
+
+        .article-preview th, .article-preview td {
+            border: 1px solid #ddd;
+            padding: 5px 8px;
+            text-align: left;
+        }
+
+        .article-preview th {
+            background: #f0f0f0;
+        }
+
+        .article-preview .phone-image {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .article-preview .phone-image img {
+            max-width: 100%;
+            max-height: 180px;
+            border-radius: 12px;
+        }
+
+        .article-preview .cta-shopee {
+            text-align: center;
+            margin: 12px 0;
+        }
+
+        .article-preview .cta-shopee img {
+            width: 40%;
+            height: auto;
             border-radius: 8px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 1000;
+        }
+
+        /* Suggestion */
+        .relative {
+            position: relative;
         }
 
         .suggestion-list {
@@ -302,41 +302,60 @@
             background: white;
             border: 1px solid #ddd;
             border-radius: 8px;
-            max-height: 200px;
+            max-height: 180px;
             overflow-y: auto;
-            width: calc(100% - 30px);
+            width: 100%;
             z-index: 100;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .suggestion-item {
-            padding: 10px;
+            padding: 8px 12px;
             cursor: pointer;
             border-bottom: 1px solid #eee;
+            font-size: 0.8rem;
         }
 
         .suggestion-item:hover {
-            background: #f0f0f0;
+            background: #f5f5f5;
         }
 
-        .relative {
-            position: relative;
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+            font-size: 0.8rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.7);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📱 Generator Artikel HP + Gambar Button (HTML & Markdown)</h1>
-            <p>Database dari Google Sheets • Button Shopee width: 50% (responsif) • CTA ke-2 bold</p>
+            <h1>📱 Generator Artikel HP</h1>
+            <p>Database Google Sheets • Auto-fill spesifikasi • Button Shopee gambar • Output HTML & Markdown</p>
         </div>
 
         <div class="grid">
+            <!-- Form Panel Kiri -->
             <div class="form-panel">
-                <h2>📝 Input Data HP</h2>
+                <h2>📝 Data HP</h2>
                 
                 <div class="form-group relative">
-                    <label>🔍 Cari Nama HP (auto-suggest dari database)</label>
+                    <label>🔍 Cari Nama HP</label>
                     <input type="text" id="hpSearch" placeholder="Ketik nama HP... contoh: infinix smart 10" autocomplete="off">
                     <div id="suggestions" class="suggestion-list" style="display: none;"></div>
                 </div>
@@ -350,91 +369,93 @@
                     <div class="row-2">
                         <div class="form-group">
                             <label>🏷️ Merek</label>
-                            <input type="text" id="brand" placeholder="Otomatis terisi">
+                            <input type="text" id="brand" placeholder="Auto">
                         </div>
                         <div class="form-group">
                             <label>💾 RAM / Storage</label>
-                            <input type="text" id="ramStorage" placeholder="Otomatis terisi">
+                            <input type="text" id="ramStorage" placeholder="Auto">
                         </div>
                     </div>
 
                     <div class="row-2">
                         <div class="form-group">
-                            <label>💰 Harga (Rp)</label>
-                            <input type="text" id="price" placeholder="Otomatis terisi">
+                            <label>💰 Harga</label>
+                            <input type="text" id="price" placeholder="Auto">
                         </div>
                         <div class="form-group">
                             <label>🖥️ Layar</label>
-                            <input type="text" id="screen" placeholder="Otomatis terisi">
+                            <input type="text" id="screen" placeholder="Auto">
                         </div>
                     </div>
 
                     <div class="row-2">
                         <div class="form-group">
                             <label>🔧 Chipset</label>
-                            <input type="text" id="chipset" placeholder="Otomatis terisi">
+                            <input type="text" id="chipset" placeholder="Auto">
                         </div>
                         <div class="form-group">
                             <label>📸 Kamera Belakang</label>
-                            <input type="text" id="rearCam" placeholder="Otomatis terisi">
+                            <input type="text" id="rearCam" placeholder="Auto">
                         </div>
                     </div>
 
                     <div class="row-2">
                         <div class="form-group">
                             <label>🤳 Kamera Depan</label>
-                            <input type="text" id="frontCam" placeholder="Otomatis terisi">
+                            <input type="text" id="frontCam" placeholder="Auto">
                         </div>
                         <div class="form-group">
                             <label>🔋 Baterai</label>
-                            <input type="text" id="battery" placeholder="Otomatis terisi">
+                            <input type="text" id="battery" placeholder="Auto">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>✨ Fitur Unggulan</label>
-                        <textarea id="features" rows="2" placeholder="Otomatis terisi"></textarea>
+                        <textarea id="features" rows="1" placeholder="Auto"></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label>🎨 Warna</label>
-                        <textarea id="colors" rows="2" placeholder="Otomatis terisi"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>📱 OS / Android</label>
-                        <input type="text" id="os" placeholder="Otomatis terisi">
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label>🎨 Warna</label>
+                            <input type="text" id="colors" placeholder="Auto">
+                        </div>
+                        <div class="form-group">
+                            <label>📱 OS</label>
+                            <input type="text" id="os" placeholder="Auto">
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label>🖼️ URL Gambar HP</label>
-                        <input type="text" id="imageUrl" placeholder="https://... (otomatis terisi dari database)">
+                        <input type="text" id="imageUrl" placeholder="Auto dari database">
                     </div>
                 </div>
 
                 <button class="btn-generate" onclick="generateArticle()">🚀 Generate Artikel</button>
                 <button class="btn-copy" onclick="copyHTML()">📋 Copy HTML</button>
-                <button class="btn-copy-markdown" onclick="copyMarkdown()">📝 Copy Markdown (GitHub)</button>
+                <button class="btn-copy-markdown" onclick="copyMarkdown()">📝 Copy Markdown</button>
                 
                 <div class="status-info" id="statusInfo">
-                    📡 Mengambil data dari Google Sheets...
+                    📡 Memuat database...
                 </div>
             </div>
 
+            <!-- Preview Panel Kanan -->
             <div class="preview-panel">
                 <h2>📄 Preview Artikel</h2>
                 <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="switchTab('html')">HTML Preview</button>
-                    <button class="tab-btn" onclick="switchTab('markdown')">Markdown Preview</button>
+                    <button class="tab-btn active" onclick="switchTab('html')">HTML</button>
+                    <button class="tab-btn" onclick="switchTab('markdown')">Markdown</button>
                 </div>
                 <div class="article-preview" id="articlePreview">
-                    <p style="color: #999; text-align: center;">Memuat database dari Google Sheets...</p>
+                    <p style="color: #999; text-align: center;">Memuat database...</p>
                 </div>
             </div>
         </div>
 
-        <div class="footer" style="text-align: center; margin-top: 30px; color: rgba(255,255,255,0.8);">
-            <p>⚡ Database dari Google Sheets • Button gambar width: 50% (responsif) • CTA ke-2 bold</p>
+        <div class="footer">
+            <p>⚡ Database dari Google Sheets • Auto-fill dari 20+ HP populer • Button Shopee width: 40%</p>
         </div>
     </div>
 
@@ -443,24 +464,17 @@
     <script>
         // ==================== GOOGLE SHEETS CONFIG ====================
         const SHEET_ID = '1hQLjpGk0ho4YgnzJ8b5BBAg7YXEZgTZ4RrjZ_9EYcJA';
-        
-        // URL untuk fetch data dari Google Sheets
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
-        
-        // Button Shopee Image URL (CDN dari kamu)
         const BUTTON_SHOPEE_URL = 'https://cdn.shopify.com/s/files/1/0506/6273/6069/files/button_shopee.jpg';
         
-        // Database global
         let hpDatabase = {};
         let hpList = [];
         let currentTab = 'html';
         let currentArticleHTML = '';
         let currentArticleMarkdown = '';
-        
-        // Default image
         const DEFAULT_IMAGE = 'https://via.placeholder.com/300x300?text=No+Image';
         
-        // ==================== LOAD DATA FROM GOOGLE SHEETS ====================
+        // ==================== LOAD DATA ====================
         async function loadFromGoogleSheets() {
             const statusDiv = document.getElementById('statusInfo');
             statusDiv.className = 'status-info loading';
@@ -469,18 +483,13 @@
             try {
                 const response = await fetch(SHEET_URL);
                 const text = await response.text();
-                
-                // Parse JSONP response
                 const jsonString = text.substring(text.indexOf('(') + 1, text.lastIndexOf(')'));
                 const data = JSON.parse(jsonString);
-                
                 const rows = data.table.rows;
                 
-                // Clear database
                 hpDatabase = {};
                 hpList = [];
                 
-                // Skip header row (row 0 is header)
                 for (let i = 0; i < rows.length; i++) {
                     const row = rows[i];
                     if (!row.c) continue;
@@ -504,25 +513,17 @@
                     const namaKey = hpData.nama_hp.toLowerCase().trim();
                     if (namaKey) {
                         hpDatabase[namaKey] = hpData;
-                        hpList.push({
-                            name: hpData.nama_hp,
-                            key: namaKey,
-                            brand: hpData.brand
-                        });
+                        hpList.push({ name: hpData.nama_hp, key: namaKey, brand: hpData.brand });
                     }
                 }
                 
-                // Sort HP list alphabetically
                 hpList.sort((a, b) => a.name.localeCompare(b.name));
-                
                 statusDiv.className = 'status-info success';
-                statusDiv.innerHTML = `✅ Berhasil memuat ${Object.keys(hpDatabase).length} data HP dari Google Sheets!`;
-                
+                statusDiv.innerHTML = `✅ ${Object.keys(hpDatabase).length} data HP siap digunakan`;
                 return true;
             } catch (error) {
-                console.error('Error loading from Google Sheets:', error);
                 statusDiv.className = 'status-info error';
-                statusDiv.innerHTML = `❌ Gagal memuat data. Error: ${error.message}`;
+                statusDiv.innerHTML = `❌ Gagal memuat data: ${error.message}`;
                 return false;
             }
         }
@@ -534,22 +535,18 @@
             
             searchInput.addEventListener('input', function() {
                 const query = this.value.toLowerCase().trim();
-                
                 if (query.length < 2) {
                     suggestionsDiv.style.display = 'none';
                     return;
                 }
-                
                 const matches = hpList.filter(hp => 
-                    hp.name.toLowerCase().includes(query) || 
-                    hp.brand.toLowerCase().includes(query)
-                ).slice(0, 10);
+                    hp.name.toLowerCase().includes(query) || hp.brand.toLowerCase().includes(query)
+                ).slice(0, 8);
                 
                 if (matches.length > 0) {
                     suggestionsDiv.innerHTML = matches.map(match => 
                         `<div class="suggestion-item" onclick="selectHP('${match.key}')">
-                            <strong>${match.name}</strong><br>
-                            <small>${match.brand}</small>
+                            <strong>${match.name}</strong> <span style="color:#888">(${match.brand})</span>
                         </div>`
                     ).join('');
                     suggestionsDiv.style.display = 'block';
@@ -604,7 +601,7 @@
             return 'Rp ' + parseInt(numeric).toLocaleString('id-ID');
         }
         
-        // ==================== GENERATE ARTICLE ====================
+        // ==================== GENERATE ====================
         function generateArticle() {
             const hpName = document.getElementById('hpSearch').value;
             const affiliateLink = document.getElementById('affiliateLink').value || '#';
@@ -623,115 +620,57 @@
             
             const featuresList = featuresRaw.split(',').map(f => f.trim()).filter(f => f);
             const colorsList = colorsRaw.split(',').map(c => c.trim()).filter(c => c);
-            
             const today = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
             const formattedPrice = formatPrice(priceRaw);
             
-            // Gambar HP
-            const imageHTML = `
-            <div class="phone-image">
-                <img src="${imageUrl}" alt="${hpName}" onerror="this.src='${DEFAULT_IMAGE}'">
-            </div>
-            `;
-            
-            // Button Shopee dengan gambar (width: 50% untuk HTML)
-            const buttonHTML = `
-            <div class="cta-shopee">
-                <a href="${affiliateLink}" target="_blank">
-                    <img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" style="width: 50%; height: auto; border-radius: 8px;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'display: inline-block; background: #ee4d2d; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;\'>🛍️ Beli di Shopee →</span>'">
-                </a>
-            </div>
-            `;
-            
-            // Button untuk Markdown - width: 50% (pakai style agar responsif)
-            const buttonMarkdown = `
-<div align="center">
-  <a href="${affiliateLink}" target="_blank">
-    <img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" style="width: 50%; height: auto; border-radius: 8px;">
-  </a>
-</div>
-            `;
-            
-            // CTA ke-2 yang ditebalkan (BOLD)
+            const imageHTML = `<div class="phone-image"><img src="${imageUrl}" alt="${hpName}" onerror="this.src='${DEFAULT_IMAGE}'"></div>`;
+            const buttonHTML = `<div class="cta-shopee"><a href="${affiliateLink}" target="_blank"><img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" style="width: 40%; height: auto; border-radius: 8px;"></a></div>`;
+            const buttonMarkdown = `<div align="center"><a href="${affiliateLink}" target="_blank"><img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" style="width: 40%; height: auto; border-radius: 8px;"></a></div>`;
             const boldCTA = `<strong><a href="${affiliateLink}" target="_blank">Klik di sini untuk membeli ${hpName} sekarang juga!</a></strong>`;
             const boldCTAMarkdown = `**[Klik di sini untuk membeli ${hpName} sekarang juga!](${affiliateLink})**`;
             
-            // ==================== HTML VERSION ====================
             currentArticleHTML = `
 <h1>${hpName}: Spesifikasi Lengkap, Harga Terbaru, dan Tempat Beli Termurah</h1>
-
 ${imageHTML}
-
 <p><strong>${today}</strong> – Pasar smartphone tanah air kembali diramaikan dengan kehadiran <strong>${hpName}</strong>, ponsel terbaru dari <strong>${brand}</strong> yang menawarkan kombinasi menarik antara performa, fitur, dan harga terjangkau.</p>
-
 <p>Hadir dengan membawa sejumlah peningkatan dibanding pendahulunya, HP ini langsung menjadi perbincangan hangat di kalangan pecinta gadget. Lantas, apa saja keunggulan yang ditawarkan? Simak ulasan lengkapnya berikut ini.</p>
-
 <hr>
-
 <h2>📱 Desain dan Tampilan</h2>
 <p>${brand} membekali ${hpName} dengan desain modern yang stylish. Layar <strong>${screen}</strong> memberikan pengalaman visual yang memukau. Tersedia dalam pilihan warna: <strong>${colorsList.join(', ') || 'berbagai pilihan menarik'}</strong>.</p>
-
 <h2>⚙️ Performa dan Dapur Pacu</h2>
 <p>Untuk urusan performa, ${hpName} mengandalkan chipset <strong>${chipset}</strong> dengan konfigurasi RAM dan storage <strong>${ramStorage}</strong>. Sistem operasi yang digunakan adalah <strong>${os}</strong>. Performanya cukup mumpuni untuk aktivitas sehari-hari seperti chatting, streaming, hingga gaming ringan.</p>
-
 <h2>📸 Kamera: Hasil Jernih untuk Dokumentasi</h2>
 <p>Di sektor fotografi, ${hpName} dibekali kamera belakang <strong>${rearCam}</strong> dan kamera depan <strong>${frontCam}</strong>. Kualitas kameranya cukup mumpuni untuk kelasnya, cocok untuk dokumentasi harian dan konten media sosial.</p>
-
 <h2>🔋 Baterai dan Fitur Pendukung</h2>
 <p>${hpName} dilengkapi baterai <strong>${battery}</strong> yang diklaim mampu bertahan seharian penuh. Fitur unggulan lainnya:</p>
-<ul>
-    ${featuresList.map(f => `<li>✅ ${f}</li>`).join('') || '<li>✅ Berbagai fitur pendukung aktivitas sehari-hari</li>'}
-</ul>
-
+<ul>${featuresList.map(f => `<li>✅ ${f}</li>`).join('') || '<li>✅ Berbagai fitur pendukung aktivitas sehari-hari</li>'}</ul>
 <h2>📊 Spesifikasi Lengkap ${hpName}</h2>
-<table>
-     <th>Komponen</th><th>Spesifikasi</th>
-     <td>Layar</td><td>${screen}</td>
-     <td>Chipset</td><td>${chipset}</td>
-     <td>RAM & Storage</td><td>${ramStorage}</td>
-     <td>Kamera Belakang</td><td>${rearCam}</td>
-     <td>Kamera Depan</td><td>${frontCam}</td>
-     <td>Baterai</td><td>${battery}</td>
-     <td>Sistem Operasi</td><td>${os}</td>
-     <td>Warna</td><td>${colorsList.join(', ') || '-'}</td>
-</table>
-
+<table><tr><th>Komponen</th><th>Spesifikasi</th></tr>
+<tr><td>Layar</td><td>${screen}</td></tr>
+<tr><td>Chipset</td><td>${chipset}</td></tr>
+<tr><td>RAM & Storage</td><td>${ramStorage}</td></tr>
+<tr><td>Kamera Belakang</td><td>${rearCam}</td></tr>
+<tr><td>Kamera Depan</td><td>${frontCam}</td></tr>
+<tr><td>Baterai</td><td>${battery}</td></tr>
+<tr><td>Sistem Operasi</td><td>${os}</td></tr>
+<tr><td>Warna</td><td>${colorsList.join(', ') || '-'}</td></tr></table>
 <h2>💰 Harga Terbaru ${hpName}</h2>
-<table>
-     <th>Varian</th><th>Harga</th>
-     <td>${ramStorage}</td><td>${formattedPrice}</td>
-</table>
-
+<table><tr><th>Varian</th><th>Harga</th></tr><tr><td>${ramStorage}</td><td>${formattedPrice}</td></tr></table>
 <hr>
-
 <h2>🛒 Beli ${hpName} Sekarang Juga!</h2>
 <p>Jangan sampai kehabisan! Dapatkan <strong>${hpName}</strong> dengan harga terbaik dan garansi resmi hanya di Shopee:</p>
-
 ${buttonHTML}
-
-<div style="background: #f0f0f0; padding: 15px; border-radius: 10px; margin: 20px 0;">
+<div style="background: #f0f0f0; padding: 12px; border-radius: 10px; margin: 15px 0;">
     <p><strong>🎁 Bonus Spesial untuk Pembaca!</strong></p>
-    <ul>
-        <li>✅ Garansi Resmi 1 Tahun</li>
-        <li>✅ Gratis Ongkir (area tertentu)</li>
-        <li>✅ Cicilan 0% (kartu kredit pilihan)</li>
-    </ul>
+    <ul><li>✅ Garansi Resmi 1 Tahun</li><li>✅ Gratis Ongkir (area tertentu)</li><li>✅ Cicilan 0% (kartu kredit pilihan)</li></ul>
 </div>
-
 <p><strong>Kesimpulan:</strong> Dengan harga <strong>${formattedPrice}</strong>, ${hpName} menawarkan nilai plus yang kompetitif di kelasnya. Cocok bagi Anda yang mencari HP dengan spesifikasi mumpuni di budget terbatas.</p>
-
 <p>👉 ${boldCTA}</p>
-
-<hr>
-<p style="font-size: 12px; color: #777;">*Harga dapat berubah sewaktu-waktu. Link afiliasi membantu mendukung konten ini.</p>
-            `;
+<hr><p style="font-size: 11px; color: #777;">*Harga dapat berubah sewaktu-waktu. Link afiliasi membantu mendukung konten ini.</p>`;
             
-            // ==================== MARKDOWN VERSION ====================
             currentArticleMarkdown = `# ${hpName}: Spesifikasi Lengkap, Harga Terbaru, dan Tempat Beli Termurah
 
-<div align="center">
-  <img src="${imageUrl}" alt="${hpName}" width="250" style="max-width:250px; border-radius:20px;">
-</div>
+<div align="center"><img src="${imageUrl}" alt="${hpName}" width="250"></div>
 
 **${today}** – Pasar smartphone tanah air kembali diramaikan dengan kehadiran **${hpName}**, ponsel terbaru dari **${brand}** yang menawarkan kombinasi menarik antara performa, fitur, dan harga terjangkau.
 
@@ -784,13 +723,9 @@ Jangan sampai kehabisan! Dapatkan **${hpName}** dengan harga terbaik dan garansi
 
 ${buttonMarkdown}
 
-<div style="background: #f0f0f0; padding: 15px; border-radius: 10px; margin: 20px 0;">
+<div style="background: #f0f0f0; padding: 12px; border-radius: 10px; margin: 15px 0;">
   <p><strong>🎁 Bonus Spesial untuk Pembaca!</strong></p>
-  <ul>
-    <li>✅ Garansi Resmi 1 Tahun</li>
-    <li>✅ Gratis Ongkir (area tertentu)</li>
-    <li>✅ Cicilan 0% (kartu kredit pilihan)</li>
-  </ul>
+  <ul><li>✅ Garansi Resmi 1 Tahun</li><li>✅ Gratis Ongkir (area tertentu)</li><li>✅ Cicilan 0% (kartu kredit pilihan)</li></ul>
 </div>
 
 **Kesimpulan:** Dengan harga **${formattedPrice}**, ${hpName} menawarkan nilai plus yang kompetitif di kelasnya. Cocok bagi Anda yang mencari HP dengan spesifikasi mumpuni di budget terbatas.
@@ -798,8 +733,7 @@ ${buttonMarkdown}
 👉 ${boldCTAMarkdown}
 
 ---
-*Harga dapat berubah sewaktu-waktu. Link afiliasi membantu mendukung konten ini.*
-            `;
+*Harga dapat berubah sewaktu-waktu. Link afiliasi membantu mendukung konten ini.*`;
             
             updatePreview();
         }
@@ -809,7 +743,7 @@ ${buttonMarkdown}
             if (currentTab === 'html') {
                 previewDiv.innerHTML = currentArticleHTML;
             } else {
-                previewDiv.innerHTML = `<pre style="white-space: pre-wrap; font-family: monospace; background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; font-size: 12px;">${escapeHtml(currentArticleMarkdown)}</pre>`;
+                previewDiv.innerHTML = `<pre style="white-space: pre-wrap; font-family: monospace; background: #1e1e1e; color: #d4d4d4; padding: 12px; border-radius: 8px; font-size: 11px; margin: 0;">${escapeHtml(currentArticleMarkdown)}</pre>`;
             }
         }
         
@@ -821,7 +755,7 @@ ${buttonMarkdown}
         
         function switchTab(tab) {
             currentTab = tab;
-            document.querySelectorAll('.tab-btn').forEach(btn => {
+            document.querySelectorAll('.tab-btn').forEach((btn, i) => {
                 btn.classList.remove('active');
             });
             document.querySelector(`.tab-btn:nth-child(${tab === 'html' ? 1 : 2})`).classList.add('active');
@@ -836,28 +770,23 @@ ${buttonMarkdown}
             navigator.clipboard.writeText(currentArticleMarkdown).then(() => showToast('✓ Markdown berhasil disalin!'));
         }
         
-        function showToast(message) {
+        function showToast(msg) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
+            toast.textContent = msg;
             toast.style.opacity = '1';
-            setTimeout(() => {
-                toast.style.opacity = '0';
-            }, 2000);
+            setTimeout(() => toast.style.opacity = '0', 2000);
         }
         
-        // ==================== INIT ====================
+        // INIT
         async function init() {
             await loadFromGoogleSheets();
             setupAutoSuggest();
-            
             if (hpList.length > 0) {
-                const firstHP = hpList[0];
-                document.getElementById('hpSearch').value = firstHP.name;
-                fillFormWithData(hpDatabase[firstHP.key]);
+                document.getElementById('hpSearch').value = hpList[0].name;
+                fillFormWithData(hpDatabase[hpList[0].key]);
                 generateArticle();
             }
         }
-        
         init();
     </script>
 </body>
