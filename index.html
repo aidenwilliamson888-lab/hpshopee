@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Artikel HP + Gambar HP + Button Shopee</title>
+    <title>Generator Artikel HP + Gambar Button (HTML & Markdown)</title>
     <style>
         * {
             margin: 0;
@@ -328,8 +328,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📱 Generator Artikel HP + Gambar + Button Shopee</h1>
-            <p>Database dari Google Sheets • Support gambar HP & button Shopee • Output HTML & Markdown</p>
+            <h1>📱 Generator Artikel HP + Gambar Button (HTML & Markdown)</h1>
+            <p>Database dari Google Sheets • Button Shopee pakai gambar (HTML & Markdown) • Output siap pakai</p>
         </div>
 
         <div class="grid">
@@ -435,7 +435,7 @@
         </div>
 
         <div class="footer" style="text-align: center; margin-top: 30px; color: rgba(255,255,255,0.8);">
-            <p>⚡ Database dari Google Sheets • Update data cukup edit Google Sheet • Button Shopee dengan gambar</p>
+            <p>⚡ Database dari Google Sheets • Button gambar berlaku di HTML & Markdown • CTA ke-2 ditebalkan</p>
         </div>
     </div>
 
@@ -635,17 +635,27 @@
             </div>
             `;
             
-            // Button Shopee dengan gambar CDN
+            // Button Shopee dengan gambar (HTML & Markdown - menggunakan HTML di Markdown)
             const buttonHTML = `
             <div class="cta-shopee">
                 <a href="${affiliateLink}" target="_blank">
-                    <img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" onerror="this.style.display='none'; this.parentElement.innerHTML='<a href=\'${affiliateLink}\' target=\'_blank\' style=\'display: inline-block; background: #ee4d2d; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;\'>🛍️ Beli di Shopee →</a>'">
+                    <img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" style="max-width: 250px; width: 100%; height: auto; border-radius: 8px;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'display: inline-block; background: #ee4d2d; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;\'>🛍️ Beli di Shopee →</span>'">
                 </a>
             </div>
             `;
             
-            // Button Markdown (teks biasa, karena markdown tidak support gambar custom)
-            const buttonMarkdown = `[🛍️ Beli ${hpName} di Shopee →](${affiliateLink})`;
+            // Button untuk Markdown (menggunakan HTML agar gambar tetap tampil)
+            const buttonMarkdown = `
+<div align="center">
+  <a href="${affiliateLink}" target="_blank">
+    <img src="${BUTTON_SHOPEE_URL}" alt="Beli di Shopee" width="250" style="max-width:250px; width:100%; height:auto;">
+  </a>
+</div>
+            `;
+            
+            // CTA ke-2 yang ditebalkan
+            const boldCTA = `<strong><a href="${affiliateLink}" target="_blank">Klik di sini untuk membeli ${hpName} sekarang juga!</a></strong>`;
+            const boldCTAMarkdown = `** [Klik di sini untuk membeli ${hpName} sekarang juga!](${affiliateLink}) **`;
             
             // ==================== HTML VERSION ====================
             currentArticleHTML = `
@@ -676,21 +686,21 @@ ${imageHTML}
 
 <h2>📊 Spesifikasi Lengkap ${hpName}</h2>
 <table>
-    <tr><th>Komponen</th><th>Spesifikasi</th> </tr>
-    <tr><td>Layar</td><td>${screen}</td> </tr>
-    <tr><td>Chipset</td><td>${chipset}</td> </tr>
-    <tr><td>RAM & Storage</td><td>${ramStorage}</td> </tr>
-    <tr><td>Kamera Belakang</td><td>${rearCam}</td> </tr>
-    <tr><td>Kamera Depan</td><td>${frontCam}</td> </tr>
-    <tr><td>Baterai</td><td>${battery}</td> </tr>
-    <tr><td>Sistem Operasi</td><td>${os}</td> </tr>
-    <tr><td>Warna</td><td>${colorsList.join(', ') || '-'}</td> </tr>
+    <tr><th>Komponen</th><th>Spesifikasi</th></tr>
+    <tr><td>Layar</td><td>${screen}</td></tr>
+    <tr><td>Chipset</td><td>${chipset}</td></tr>
+    <tr><td>RAM & Storage</td><td>${ramStorage}</td></tr>
+    <tr><td>Kamera Belakang</td><td>${rearCam}</td></tr>
+    <tr><td>Kamera Depan</td><td>${frontCam}</td></tr>
+    <tr><td>Baterai</td><td>${battery}</td></tr>
+    <tr><td>Sistem Operasi</td><td>${os}</td></tr>
+    <tr><td>Warna</td><td>${colorsList.join(', ') || '-'}</td></tr>
 </table>
 
 <h2>💰 Harga Terbaru ${hpName}</h2>
 <table>
-    <tr><th>Varian</th><th>Harga</th> </tr>
-    <tr><td>${ramStorage}</td><td>${formattedPrice}</td> </tr>
+    <tr><th>Varian</th><th>Harga</th></tr>
+    <tr><td>${ramStorage}</td><td>${formattedPrice}</td></tr>
 </table>
 
 <hr>
@@ -711,16 +721,19 @@ ${buttonHTML}
 
 <p><strong>Kesimpulan:</strong> Dengan harga <strong>${formattedPrice}</strong>, ${hpName} menawarkan nilai plus yang kompetitif di kelasnya. Cocok bagi Anda yang mencari HP dengan spesifikasi mumpuni di budget terbatas.</p>
 
-<p>👉 <strong><a href="${affiliateLink}" target="_blank">Klik di sini untuk membeli ${hpName} sekarang juga!</a></strong></p>
+<p>👉 ${boldCTA}</p>
 
 <hr>
 <p style="font-size: 12px; color: #777;">*Harga dapat berubah sewaktu-waktu. Link afiliasi membantu mendukung konten ini.</p>
             `;
             
             // ==================== MARKDOWN VERSION ====================
+            // Menggunakan HTML di Markdown agar gambar button tetap tampil
             currentArticleMarkdown = `# ${hpName}: Spesifikasi Lengkap, Harga Terbaru, dan Tempat Beli Termurah
 
-![${hpName}](${imageUrl})
+<div align="center">
+  <img src="${imageUrl}" alt="${hpName}" width="300" style="max-width:300px; border-radius:20px;">
+</div>
 
 **${today}** – Pasar smartphone tanah air kembali diramaikan dengan kehadiran **${hpName}**, ponsel terbaru dari **${brand}** yang menawarkan kombinasi menarik antara performa, fitur, dan harga terjangkau.
 
@@ -773,14 +786,18 @@ Jangan sampai kehabisan! Dapatkan **${hpName}** dengan harga terbaik dan garansi
 
 ${buttonMarkdown}
 
-**🎁 Bonus Spesial untuk Pembaca!**
-- ✅ Garansi Resmi 1 Tahun
-- ✅ Gratis Ongkir (area tertentu)
-- ✅ Cicilan 0% (kartu kredit pilihan)
+<div style="background: #f0f0f0; padding: 15px; border-radius: 10px; margin: 20px 0;">
+  <p><strong>🎁 Bonus Spesial untuk Pembaca!</strong></p>
+  <ul>
+    <li>✅ Garansi Resmi 1 Tahun</li>
+    <li>✅ Gratis Ongkir (area tertentu)</li>
+    <li>✅ Cicilan 0% (kartu kredit pilihan)</li>
+  </ul>
+</div>
 
 **Kesimpulan:** Dengan harga **${formattedPrice}**, ${hpName} menawarkan nilai plus yang kompetitif di kelasnya. Cocok bagi Anda yang mencari HP dengan spesifikasi mumpuni di budget terbatas.
 
-👉 [Klik di sini untuk membeli ${hpName} sekarang juga!](${affiliateLink})
+👉 **${boldCTAMarkdown}**
 
 ---
 *Harga dapat berubah sewaktu-waktu. Link afiliasi membantu mendukung konten ini.*
@@ -794,6 +811,7 @@ ${buttonMarkdown}
             if (currentTab === 'html') {
                 previewDiv.innerHTML = currentArticleHTML;
             } else {
+                // Untuk preview Markdown, tampilkan sebagai pre dengan background gelap
                 previewDiv.innerHTML = `<pre style="white-space: pre-wrap; font-family: monospace; background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; font-size: 12px;">${escapeHtml(currentArticleMarkdown)}</pre>`;
             }
         }
